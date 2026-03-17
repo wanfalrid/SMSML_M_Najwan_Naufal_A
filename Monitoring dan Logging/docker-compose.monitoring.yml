@@ -1,0 +1,75 @@
+# ──────────────────────────────────────────────────────────────────────
+#  Docker Compose — Full Monitoring Stack
+#  Flask API + Prometheus + Grafana
+# ──────────────────────────────────────────────────────────────────────
+
+services:
+  # ── Wine Quality Prediction API ─────────────────────────────────────
+  wine-quality-api:
+    build:
+      context: ../Membangun_model
+      dockerfile: Dockerfile
+    container_name: wine-quality-api
+    ports:
+      - "5000:5000"
+    environment:
+      - MODEL_DIR=/app/model
+      - PORT=5000
+    volumes:
+      - ../Membangun_model/model:/app/model:ro
+    restart: unless-stopped
+    networks:
+      - monitoring
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ── Prometheus ──────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - "--web.enable-lifecycle"
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  # ── Grafana ─────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - monitoring
+    depends_on:
+      - prometheus
+
+networks:
+  monitoring:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:

@@ -1,0 +1,68 @@
+# ──────────────────────────────────────────────────────────────────────
+#  Prometheus Alert Rules — Wine Quality API
+# ──────────────────────────────────────────────────────────────────────
+
+groups:
+  - name: wine_quality_api_alerts
+    rules:
+      # ── Service Down ─────────────────────────────────────────────
+      - alert: WineQualityAPIDown
+        expr: up{job="wine-quality-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Wine Quality API is down"
+          description: "The Wine Quality API service has been unreachable for more than 1 minute."
+
+      # ── High Error Rate ──────────────────────────────────────────
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(wine_prediction_requests_total{status!="200"}[5m]))
+          /
+          sum(rate(wine_prediction_requests_total[5m]))
+          > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate on Wine Quality API"
+          description: "Error rate is above 10% for the last 5 minutes. Current rate: {{ $value | humanizePercentage }}"
+
+      # ── High Latency ─────────────────────────────────────────────
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, 
+            sum(rate(wine_prediction_request_duration_seconds_bucket[5m])) by (le)
+          ) > 1.0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High latency on Wine Quality API"
+          description: "95th percentile latency exceeds 1 second. Current p95: {{ $value | humanizeDuration }}"
+
+      # ── No Traffic ───────────────────────────────────────────────
+      - alert: NoTraffic
+        expr: |
+          sum(rate(wine_prediction_requests_total[10m])) == 0
+        for: 30m
+        labels:
+          severity: info
+        annotations:
+          summary: "No traffic to Wine Quality API"
+          description: "No prediction requests in the last 30 minutes."
+
+      # ── High Prediction Skew ─────────────────────────────────────
+      - alert: PredictionSkew
+        expr: |
+          sum(rate(wine_prediction_class_total{predicted_class="1"}[1h]))
+          /
+          sum(rate(wine_prediction_class_total[1h]))
+          > 0.8
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "Prediction distribution skew detected"
+          description: "More than 80% of predictions are 'High Quality' in the last hour. Possible data drift."

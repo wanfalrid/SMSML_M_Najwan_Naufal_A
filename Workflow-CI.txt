@@ -1,0 +1,48 @@
+========================================
+  WORKFLOW CI — Wine Quality MLOps
+  Dicoding Proyek Akhir
+  M_Najwan_Naufal_A (najwanopal)
+========================================
+
+GitHub Repository:
+https://github.com/najwanopal/wine-quality-mlops
+
+CI/CD Pipeline:
+https://github.com/najwanopal/wine-quality-mlops/actions
+
+DagsHub MLflow Tracking:
+https://dagshub.com/najwanopal/wine-quality-mlops
+
+========================================
+  DESKRIPSI WORKFLOW
+========================================
+
+File: .github/workflows/ci-cd.yml
+
+Pipeline CI/CD berjalan otomatis pada:
+- Push ke branch `main` atau `develop`
+- Pull Request ke branch `main`
+
+Jobs:
+1. LINT    — Pengecekan kode dengan flake8 dan black
+2. TEST    — Menjalankan pytest untuk API endpoint
+3. DOCKER  — Build & push Docker image ke GitHub Container Registry
+4. TRAIN   — Menjalankan training pipeline (via commit message [train])
+
+========================================
+  CARA MENGGUNAKAN
+========================================
+
+1. Clone repository
+   git clone https://github.com/najwanopal/wine-quality-mlops.git
+
+2. Push perubahan ke main → CI/CD otomatis jalan
+   git add .
+   git commit -m "Update model"
+   git push origin main
+
+3. Trigger training pipeline
+   git commit --allow-empty -m "[train] Retrain model"
+   git push origin main
+
+4. Lihat hasil di GitHub Actions tab

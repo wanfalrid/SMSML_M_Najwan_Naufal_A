@@ -1,0 +1,119 @@
+# ──────────────────────────────────────────────────────────────────
+#  .gitignore — Wine Quality MLOps Project
+#  Student: M_Najwan_Naufal_A
+# ──────────────────────────────────────────────────────────────────
+
+# ═══════════════════════════════════════
+#  Python
+# ═══════════════════════════════════════
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+develop-eggs/
+eggs/
+sdist/
+wheels/
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# ═══════════════════════════════════════
+#  Virtual Environment
+# ═══════════════════════════════════════
+venv/
+env/
+.venv/
+ENV/
+
+# ═══════════════════════════════════════
+#  IDE / Editor
+# ═══════════════════════════════════════
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# ═══════════════════════════════════════
+#  OS Generated
+# ═══════════════════════════════════════
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ═══════════════════════════════════════
+#  MLflow
+# ═══════════════════════════════════════
+mlruns/
+mlartifacts/
+
+# ═══════════════════════════════════════
+#  Data (downloaded/generated — NOT tracked)
+# ═══════════════════════════════════════
+Eksperimen_SML_M_Najwan_Naufal_A/winequality_raw/
+Eksperimen_SML_M_Najwan_Naufal_A/data/
+
+# ═══════════════════════════════════════
+#  Output Artifacts (generated — NOT tracked)
+# ═══════════════════════════════════════
+Eksperimen_SML_M_Najwan_Naufal_A/output/
+
+# ═══════════════════════════════════════
+#  Docker
+# ═══════════════════════════════════════
+*.log
+docker-compose.override.yml
+
+# ═══════════════════════════════════════
+#  Monitoring Volumes (local data)
+# ═══════════════════════════════════════
+Monitoring dan Logging/prometheus_data/
+Monitoring dan Logging/grafana_data/
+
+# ═══════════════════════════════════════
+#  Testing / Coverage
+# ═══════════════════════════════════════
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+nosetests.xml
+
+# ═══════════════════════════════════════
+#  Jupyter Notebook
+# ═══════════════════════════════════════
+.ipynb_checkpoints/
+
+# ═══════════════════════════════════════
+#  Distribution / Packaging
+# ═══════════════════════════════════════
+*.tar.gz
+*.zip
+*.whl
+
+# ═══════════════════════════════════════
+#  Secrets (NEVER commit these!)
+# ═══════════════════════════════════════
+.env
+.env.local
+*.secret
+credentials.json
