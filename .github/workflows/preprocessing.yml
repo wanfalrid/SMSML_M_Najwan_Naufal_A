@@ -1,0 +1,193 @@
+# ──────────────────────────────────────────────────────────────────────
+#  GitHub Actions Workflow — Automated Preprocessing Pipeline
+#  Wine Quality Binary Classification
+#  Student: M_Najwan_Naufal_A
+# ──────────────────────────────────────────────────────────────────────
+
+name: Preprocessing Pipeline
+
+on:
+  # Trigger saat push ke main jika ada perubahan di folder data
+  push:
+    branches: [main]
+    paths:
+      - "Eksperimen_SML_M_Najwan_Naufal_A/winequality_raw/**"
+      - "Eksperimen_SML_M_Najwan_Naufal_A/preprocessing/automate_M_Najwan_Naufal_A.py"
+      - "Eksperimen_SML_M_Najwan_Naufal_A/requirements.txt"
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      test_size:
+        description: "Test set proportion (0.0 - 1.0)"
+        required: false
+        default: "0.2"
+      random_state:
+        description: "Random seed"
+        required: false
+        default: "42"
+
+  # Schedule: setiap hari Senin jam 00:00 UTC (simulasi data refresh)
+  schedule:
+    - cron: "0 0 * * 1"
+
+env:
+  PYTHON_VERSION: "3.10"
+  EKSPERIMEN_DIR: "Eksperimen_SML_M_Najwan_Naufal_A"
+
+jobs:
+  # ════════════════════════════════════════════════════════════════════
+  #  Job: Preprocessing
+  # ════════════════════════════════════════════════════════════════════
+  preprocessing:
+    name: Run Preprocessing Pipeline
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      # ── Step 1: Checkout repository ────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── Step 2: Setup Python ───────────────────────────────────────
+      - name: Setup Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # ── Step 3: Cache pip dependencies ─────────────────────────────
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # ── Step 4: Install dependencies ───────────────────────────────
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ${{ env.EKSPERIMEN_DIR }}/requirements.txt
+
+      # ── Step 5: Download dataset (jika belum ada) ──────────────────
+      - name: Download dataset
+        working-directory: ${{ env.EKSPERIMEN_DIR }}
+        run: python download_data.py
+
+      # ── Step 6: Run preprocessing pipeline ─────────────────────────
+      - name: Run automate preprocessing
+        id: preprocessing
+        working-directory: ${{ env.EKSPERIMEN_DIR }}/preprocessing
+        run: |
+          python automate_M_Najwan_Naufal_A.py \
+            --test-size ${{ github.event.inputs.test_size || '0.2' }} \
+            --random-state ${{ github.event.inputs.random_state || '42' }}
+
+      # ── Step 7: Verify output files ────────────────────────────────
+      - name: Verify preprocessing output
+        working-directory: ${{ env.EKSPERIMEN_DIR }}/preprocessing/winequality_preprocessing
+        run: |
+          echo "=== Verifying preprocessing output ==="
+          for file in X_train.csv X_test.csv y_train.csv y_test.csv scaler.pkl label_encoder.pkl preprocessing_report.json; do
+            if [ -f "$file" ]; then
+              size=$(stat -c%s "$file")
+              echo "✅ $file ($size bytes)"
+            else
+              echo "❌ MISSING: $file"
+              exit 1
+            fi
+          done
+          echo ""
+          echo "=== Preprocessing Report ==="
+          cat preprocessing_report.json
+
+      # ── Step 8: Commit and push results ────────────────────────────
+      - name: Commit and push preprocessing results
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add ${{ env.EKSPERIMEN_DIR }}/preprocessing/winequality_preprocessing/
+
+          # Check if there are changes to commit
+          if git diff --cached --quiet; then
+            echo "No changes to commit — preprocessing output is unchanged"
+          else
+            git commit -m "🤖 Auto-update preprocessing results [skip ci]
+
+            Triggered by: ${{ github.event_name }}
+            Test size: ${{ github.event.inputs.test_size || '0.2' }}
+            Random state: ${{ github.event.inputs.random_state || '42' }}
+            Timestamp: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+            git push
+            echo "✅ Preprocessing results committed and pushed"
+          fi
+
+      # ── Step 9: Upload preprocessing artifacts ─────────────────────
+      - name: Upload preprocessing artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: preprocessing-results-${{ github.run_number }}
+          path: |
+            ${{ env.EKSPERIMEN_DIR }}/preprocessing/winequality_preprocessing/
+          retention-days: 7
+
+      # ── Step 10: Upload preprocessing report ───────────────────────
+      - name: Upload preprocessing report
+        uses: actions/upload-artifact@v4
+        with:
+          name: preprocessing-report-${{ github.run_number }}
+          path: |
+            ${{ env.EKSPERIMEN_DIR }}/preprocessing/winequality_preprocessing/preprocessing_report.json
+          retention-days: 30
+
+  # ════════════════════════════════════════════════════════════════════
+  #  Job: Create Issue on Failure
+  # ════════════════════════════════════════════════════════════════════
+  notify-on-failure:
+    name: Create Issue on Failure
+    runs-on: ubuntu-latest
+    needs: preprocessing
+    if: failure()
+    permissions:
+      issues: write
+
+    steps:
+      - name: Create GitHub Issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = `🚨 Preprocessing Pipeline Failed — Run #${context.runNumber}`;
+            const body = `## Preprocessing Pipeline Failure
+
+            **Run:** [#${context.runNumber}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+            **Trigger:** \`${context.eventName}\`
+            **Branch:** \`${context.ref}\`
+            **Timestamp:** \`${new Date().toISOString()}\`
+
+            ### Details
+            The automated preprocessing pipeline has failed. Please check the workflow logs for details.
+
+            ### Steps to Debug
+            1. Go to [Actions tab](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions)
+            2. Click on the failed run #${context.runNumber}
+            3. Check the logs for the \`Run automate preprocessing\` step
+            4. Fix the issue and re-run the workflow
+
+            ---
+            *This issue was created automatically by GitHub Actions.*`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['bug', 'automation']
+            });

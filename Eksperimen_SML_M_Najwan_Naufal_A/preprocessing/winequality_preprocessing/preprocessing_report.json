@@ -1,0 +1,182 @@
+{
+  "pipeline": "Wine Quality Preprocessing",
+  "student": "M_Najwan_Naufal_A",
+  "timestamp": "2026-03-17T08:45:24.586399",
+  "parameters": {
+    "input_path": "D:\\Pijak\\Proyek Akhir\\Eksperimen_SML_M_Najwan_Naufal_A\\winequality_raw\\winequality_combined.csv",
+    "output_dir": "D:\\Pijak\\Proyek Akhir\\Eksperimen_SML_M_Najwan_Naufal_A\\preprocessing\\winequality_preprocessing",
+    "test_size": 0.2,
+    "random_state": 42
+  },
+  "original_shape": [
+    6497,
+    13
+  ],
+  "data_quality": {
+    "shape": [
+      6497,
+      13
+    ],
+    "dtypes": {
+      "fixed acidity": "float64",
+      "volatile acidity": "float64",
+      "citric acid": "float64",
+      "residual sugar": "float64",
+      "chlorides": "float64",
+      "free sulfur dioxide": "float64",
+      "total sulfur dioxide": "float64",
+      "density": "float64",
+      "pH": "float64",
+      "sulphates": "float64",
+      "alcohol": "float64",
+      "quality": "int64",
+      "wine_type": "int64"
+    },
+    "total_missing_values": 0,
+    "missing_per_column": {
+      "fixed acidity": 0,
+      "volatile acidity": 0,
+      "citric acid": 0,
+      "residual sugar": 0,
+      "chlorides": 0,
+      "free sulfur dioxide": 0,
+      "total sulfur dioxide": 0,
+      "density": 0,
+      "pH": 0,
+      "sulphates": 0,
+      "alcohol": 0,
+      "quality": 0,
+      "wine_type": 0
+    },
+    "n_duplicates": 1177,
+    "pct_duplicates": 18.12,
+    "quality_distribution": {
+      "3": 30,
+      "4": 216,
+      "5": 2138,
+      "6": 2836,
+      "7": 1079,
+      "8": 193,
+      "9": 5
+    },
+    "binary_target": {
+      "high_quality_gte7": 1277,
+      "low_quality_lt7": 5220,
+      "imbalance_ratio": 4.09
+    }
+  },
+  "shape_after_dedup": [
+    5320,
+    13
+  ],
+  "rows_removed_duplicates": 1177,
+  "outlier_handling": {
+    "fixed acidity": {
+      "n_outliers": 304,
+      "lower_bound": 4.45,
+      "upper_bound": 9.65
+    },
+    "volatile acidity": {
+      "n_outliers": 279,
+      "lower_bound": -0.04,
+      "upper_bound": 0.68
+    },
+    "citric acid": {
+      "n_outliers": 143,
+      "lower_bound": -0.0,
+      "upper_bound": 0.64
+    },
+    "residual sugar": {
+      "n_outliers": 141,
+      "lower_bound": -6.75,
+      "upper_bound": 16.05
+    },
+    "chlorides": {
+      "n_outliers": 237,
+      "lower_bound": -0.004,
+      "upper_bound": 0.108
+    },
+    "free sulfur dioxide": {
+      "n_outliers": 44,
+      "lower_bound": -21.5,
+      "upper_bound": 78.5
+    },
+    "total sulfur dioxide": {
+      "n_outliers": 10,
+      "lower_bound": -44.875,
+      "upper_bound": 272.125
+    },
+    "density": {
+      "n_outliers": 3,
+      "lower_bound": 0.9853,
+      "upper_bound": 1.0036
+    },
+    "pH": {
+      "n_outliers": 49,
+      "lower_bound": 2.78,
+      "upper_bound": 3.66
+    },
+    "sulphates": {
+      "n_outliers": 163,
+      "lower_bound": 0.175,
+      "upper_bound": 0.855
+    },
+    "alcohol": {
+      "n_outliers": 1,
+      "lower_bound": 6.65,
+      "upper_bound": 14.25
+    }
+  },
+  "split": {
+    "X_train_shape": [
+      4256,
+      12
+    ],
+    "X_test_shape": [
+      1064,
+      12
+    ],
+    "y_train_distribution": {
+      "low_quality_0": 3449,
+      "high_quality_1": 807
+    },
+    "y_test_distribution": {
+      "low_quality_0": 862,
+      "high_quality_1": 202
+    },
+    "feature_columns": [
+      "fixed acidity",
+      "volatile acidity",
+      "citric acid",
+      "residual sugar",
+      "chlorides",
+      "free sulfur dioxide",
+      "total sulfur dioxide",
+      "density",
+      "pH",
+      "sulphates",
+      "alcohol",
+      "wine_type"
+    ]
+  },
+  "scaling": {
+    "method": "StandardScaler",
+    "train_mean": 0.0,
+    "train_std": 1.000118
+  },
+  "saved_files": {
+    "X_test.csv": "245.9 KB",
+    "X_train.csv": "983.7 KB",
+    "label_encoder.pkl": "0.3 KB",
+    "scaler.pkl": "0.9 KB",
+    "y_test.csv": "3.1 KB",
+    "y_train.csv": "12.5 KB"
+  },
+  "status": "SUCCESS",
+  "final_shape": {
+    "total_samples": 5320,
+    "n_features": 12,
+    "train_samples": 4256,
+    "test_samples": 1064
+  }
+}

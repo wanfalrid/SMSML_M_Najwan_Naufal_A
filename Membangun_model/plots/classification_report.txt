@@ -1,0 +1,13 @@
+Classification Report — Baseline Random Forest
+=======================================================
+
+              precision    recall  f1-score   support
+
+ Low Quality       0.86      0.96      0.91       862
+High Quality       0.67      0.36      0.47       202
+
+    accuracy                           0.84      1064
+   macro avg       0.77      0.66      0.69      1064
+weighted avg       0.83      0.84      0.83      1064
+
+ROC AUC: 0.8740
