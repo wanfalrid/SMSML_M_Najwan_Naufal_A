@@ -1,10 +1,10 @@
 {
   "pipeline": "Wine Quality Preprocessing",
   "student": "M_Najwan_Naufal_A",
-  "timestamp": "2026-03-17T08:45:24.586399",
+  "timestamp": "2026-03-19T00:35:50.362553",
   "parameters": {
-    "input_path": "D:\\Pijak\\Proyek Akhir\\Eksperimen_SML_M_Najwan_Naufal_A\\winequality_raw\\winequality_combined.csv",
-    "output_dir": "D:\\Pijak\\Proyek Akhir\\Eksperimen_SML_M_Najwan_Naufal_A\\preprocessing\\winequality_preprocessing",
+    "input_path": "/home/runner/work/Proyek-Akhir/Proyek-Akhir/Eksperimen_SML_M_Najwan_Naufal_A/winequality_raw/winequality_combined.csv",
+    "output_dir": "/home/runner/work/Proyek-Akhir/Proyek-Akhir/Eksperimen_SML_M_Najwan_Naufal_A/preprocessing/winequality_preprocessing",
     "test_size": 0.2,
     "random_state": 42
   },
@@ -165,12 +165,13 @@
     "train_std": 1.000118
   },
   "saved_files": {
-    "X_test.csv": "245.9 KB",
-    "X_train.csv": "983.7 KB",
+    "X_test.csv": "244.9 KB",
+    "X_train.csv": "979.6 KB",
     "label_encoder.pkl": "0.3 KB",
-    "scaler.pkl": "0.9 KB",
-    "y_test.csv": "3.1 KB",
-    "y_train.csv": "12.5 KB"
+    "preprocessing_report.json": "3.9 KB",
+    "scaler.pkl": "1.0 KB",
+    "y_test.csv": "2.1 KB",
+    "y_train.csv": "8.3 KB"
   },
   "status": "SUCCESS",
   "final_shape": {
