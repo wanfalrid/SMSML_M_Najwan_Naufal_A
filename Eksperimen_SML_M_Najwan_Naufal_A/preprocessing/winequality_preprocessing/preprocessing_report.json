@@ -1,7 +1,7 @@
 {
   "pipeline": "Wine Quality Preprocessing",
   "student": "M_Najwan_Naufal_A",
-  "timestamp": "2026-03-19T00:35:50.362553",
+  "timestamp": "2026-03-23T02:14:17.335741",
   "parameters": {
     "input_path": "/home/runner/work/Proyek-Akhir/Proyek-Akhir/Eksperimen_SML_M_Najwan_Naufal_A/winequality_raw/winequality_combined.csv",
     "output_dir": "/home/runner/work/Proyek-Akhir/Proyek-Akhir/Eksperimen_SML_M_Najwan_Naufal_A/preprocessing/winequality_preprocessing",
@@ -168,7 +168,7 @@
     "X_test.csv": "244.9 KB",
     "X_train.csv": "979.6 KB",
     "label_encoder.pkl": "0.3 KB",
-    "preprocessing_report.json": "3.9 KB",
+    "preprocessing_report.json": "4.0 KB",
     "scaler.pkl": "1.0 KB",
     "y_test.csv": "2.1 KB",
     "y_train.csv": "8.3 KB"
