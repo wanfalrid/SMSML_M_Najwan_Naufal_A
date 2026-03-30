@@ -1,10 +1,10 @@
 {
   "pipeline": "Wine Quality Preprocessing",
   "student": "M_Najwan_Naufal_A",
-  "timestamp": "2026-03-23T02:14:17.335741",
+  "timestamp": "2026-03-30T02:32:16.331162",
   "parameters": {
-    "input_path": "/home/runner/work/Proyek-Akhir/Proyek-Akhir/Eksperimen_SML_M_Najwan_Naufal_A/winequality_raw/winequality_combined.csv",
-    "output_dir": "/home/runner/work/Proyek-Akhir/Proyek-Akhir/Eksperimen_SML_M_Najwan_Naufal_A/preprocessing/winequality_preprocessing",
+    "input_path": "/home/runner/work/SMSML_M_Najwan_Naufal_A/SMSML_M_Najwan_Naufal_A/Eksperimen_SML_M_Najwan_Naufal_A/winequality_raw/winequality_combined.csv",
+    "output_dir": "/home/runner/work/SMSML_M_Najwan_Naufal_A/SMSML_M_Najwan_Naufal_A/Eksperimen_SML_M_Najwan_Naufal_A/preprocessing/winequality_preprocessing",
     "test_size": 0.2,
     "random_state": 42
   },
