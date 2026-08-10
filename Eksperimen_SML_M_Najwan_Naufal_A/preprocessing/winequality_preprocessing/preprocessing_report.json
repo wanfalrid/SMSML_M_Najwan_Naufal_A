@@ -1,7 +1,7 @@
 {
   "pipeline": "Wine Quality Preprocessing",
   "student": "M_Najwan_Naufal_A",
-  "timestamp": "2026-08-03T02:45:54.729463",
+  "timestamp": "2026-08-10T01:45:19.538702",
   "parameters": {
     "input_path": "/home/runner/work/SMSML_M_Najwan_Naufal_A/SMSML_M_Najwan_Naufal_A/Eksperimen_SML_M_Najwan_Naufal_A/winequality_raw/winequality_combined.csv",
     "output_dir": "/home/runner/work/SMSML_M_Najwan_Naufal_A/SMSML_M_Najwan_Naufal_A/Eksperimen_SML_M_Najwan_Naufal_A/preprocessing/winequality_preprocessing",
